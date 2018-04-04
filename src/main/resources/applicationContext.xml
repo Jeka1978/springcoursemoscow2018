@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+    <bean id="integerFactory" class="quoters.IntegerFactory"/>
+
+    <bean class="java.lang.Integer" factory-bean="integerFactory" factory-method="getInt"/>
+
+
+    <context:annotation-config/>
+    <context:property-placeholder location="classpath:application.properties" ignore-resource-not-found="true"/>
+    <bean class="quoters.InjectRandomIntAnnotationBeanPostProcessor"/>
+    <bean class="quoters.BeanDefinitionValidatorBeanFactoryPostProcessor"/>
     <bean id="talkingMachine" class="my.spring.TalkingMachineImpl">
+
+
 
 
         <constructor-arg index="0" value="12"/>
@@ -17,7 +28,7 @@
             </list>
         </property>
     </bean>
-    <bean id="terminatorQuoter" class="quoters.TerminatorQuoter">
+    <bean id="terminatorQuoter" class="quoters.TerminatorQuoter" destroy-method="killAll">
         <property name="messages">
             <list>
                 <value>I'll be back</value>
@@ -26,6 +37,6 @@
         </property>
     </bean>
     <bean id="shakespearQuoter" class="quoters.ShakespearQuoter">
-        <property name="message" value="2 B || ! 2 B"/>
+        <property name="message" value="${shake}"/>
     </bean>
 </beans>
