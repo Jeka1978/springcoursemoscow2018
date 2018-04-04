@@ -4,39 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="integerFactory" class="quoters.IntegerFactory"/>
-
-    <bean class="java.lang.Integer" factory-bean="integerFactory" factory-method="getInt"/>
 
 
-    <context:annotation-config/>
-    <context:property-placeholder location="classpath:application.properties" ignore-resource-not-found="true"/>
-    <bean class="quoters.InjectRandomIntAnnotationBeanPostProcessor"/>
-    <bean class="quoters.BeanDefinitionValidatorBeanFactoryPostProcessor"/>
-    <bean id="talkingMachine" class="my.spring.TalkingMachineImpl">
+    <context:component-scan base-package="quoters"/>
 
 
-
-
-        <constructor-arg index="0" value="12"/>
-        <constructor-arg index="1" type="double" value="13"/>
-
-        <property name="quoters">
-            <list>
-                <ref bean="shakespearQuoter"/>
-                <ref bean="terminatorQuoter"/>
-            </list>
-        </property>
-    </bean>
-    <bean id="terminatorQuoter" class="quoters.TerminatorQuoter" destroy-method="killAll">
-        <property name="messages">
-            <list>
-                <value>I'll be back</value>
-                <value>Come with ne if you wanna live</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="shakespearQuoter" class="quoters.ShakespearQuoter">
-        <property name="message" value="${shake}"/>
-    </bean>
 </beans>

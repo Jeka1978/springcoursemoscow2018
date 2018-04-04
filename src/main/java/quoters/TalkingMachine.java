@@ -1,4 +1,4 @@
-package my.spring;
+package quoters;
 
 /**
  * @author Evgeny Borisov

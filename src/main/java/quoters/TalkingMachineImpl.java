@@ -1,24 +1,23 @@
-package my.spring;
+package quoters;
 
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import quoters.Quoter;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Evgeny Borisov
  */
+@Component
 public class TalkingMachineImpl implements TalkingMachine {
     @Setter
-    private List<Quoter> quoters;
+    @Media(Genre.BOOK)
+    private List<Quoter> quoters = Arrays.asList(() -> System.out.println("THis is default"));
 
-
-    public TalkingMachineImpl(int x, double y) {
-        System.out.println("x = " + x);
-    }
 
     @Override
     @PostConstruct

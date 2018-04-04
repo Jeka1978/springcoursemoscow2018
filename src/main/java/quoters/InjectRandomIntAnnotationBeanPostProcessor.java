@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 /**
  * @author Evgeny Borisov
  */
-
+@Component
 public class InjectRandomIntAnnotationBeanPostProcessor implements BeanPostProcessor {
     private DataFactory dataFactory = new DataFactory();
     @Nullable
