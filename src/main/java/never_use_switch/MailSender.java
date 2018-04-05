@@ -1,22 +1,46 @@
 package never_use_switch;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
 /**
  * @author Evgeny Borisov
  */
+@RequiredArgsConstructor
+@Component
 public class MailSender {
-    private MailDao mailDao = new MailDaoImpl();
 
+    private final MailDao mailDao;
+
+
+    @Autowired
+    private Map<String,MailGenerator> map;
+
+    @Scheduled(fixedDelay = 1000)
     public void sendMail() {
-        int mailCode = mailDao.getMailCode();
-        switch (mailCode) {
-            case 1:
-                //50 lines of code
-                System.out.println("Welcome mail was sent");
-                break;
-            case 2:
-                //60 lines of code
-                System.out.println("Happy birthday mail was sent");
-                break;
-        }
+        String mailCode = String.valueOf(mailDao.getMailCode());
+        MailGenerator mailGenerator = map.getOrDefault(mailCode, () -> {
+            throw new RuntimeException(mailCode + " not supported");
+        });
+        String html = mailGenerator.generateBody();
+        send(html);
+    }
+
+    private void send(String html) {
+        System.out.println(html+" was sent");
     }
 }
+
+
+
+
+
+
+
+
+
+
